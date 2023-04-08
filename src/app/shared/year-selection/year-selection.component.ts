@@ -13,7 +13,7 @@ export class YearSelectionComponent implements OnInit {
   ngOnInit(): void {
     for (var i = 2023; i >= 1950; i--) {
       this.years.push(i);
-  }
+    }
   }
 
   selectYear(year) {

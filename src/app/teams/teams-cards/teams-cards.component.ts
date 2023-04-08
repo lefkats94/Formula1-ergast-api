@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
+import { Subscription } from 'rxjs';
+import { UserSelectionService } from 'src/app/shared/user-selection.service';
 import { TeamsApiService } from '../team-api.service';
 
 @Component({
@@ -6,39 +8,34 @@ import { TeamsApiService } from '../team-api.service';
   templateUrl: './teams-cards.component.html',
   styleUrls: ['./teams-cards.component.css']
 })
-export class TeamsCardsComponent implements OnInit {
+export class TeamsCardsComponent implements OnDestroy {
 
   selectedYear: number;
   selectedType: string;
   teamsData: any[];
+  subscription: Subscription
 
-  constructor(private teamsService : TeamsApiService){}
+  constructor(private userSelection: UserSelectionService, private teamsService : TeamsApiService){
+    this.subscription = this.userSelection.selectedYear$.subscribe((year) => {
+      this.selectedYear = year;
+      this.onSelectedData();
+    });
 
-  ngOnInit(): void {
-    this.selectedYear = 2023;
-    this.selectedType = 'drivers';
-    this.teamsService.getTeams(this.selectedType, this.selectedYear).subscribe(
-      data => {
-        this.teamsData = data;
-      },
-    );
+    this.subscription.add(this.userSelection.selectedType$.subscribe((type) => {
+      this.selectedType = type;
+      this.onSelectedData();
+    }));
   }
 
-  onYearSelected(year: number) {
-    this.selectedYear = year;
-    this.teamsService.getTeams(this.selectedType, this.selectedYear).subscribe(
-      data => {
-        this.teamsData = data;
-      },
-    );
+  onSelectedData(){
+      this.teamsService.getTeams(this.selectedType, this.selectedYear).subscribe(
+        data => {
+          this.teamsData = data;
+        },
+      );
   }
 
-  onTypeSelected(type: string) {
-    this.selectedType = type;
-    this.teamsService.getTeams(this.selectedType, this.selectedYear).subscribe(
-      data => {
-        this.teamsData = data;
-      },
-    );
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
   }
 }

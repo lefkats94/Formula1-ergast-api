@@ -28,7 +28,7 @@
         style="padding-bottom: 25px; justify-content: center; text-align: center;"
         *ngFor="let circuit of circuitsData">
         <mat-card class="drivers-card">
-          {{circuit.name}}
+          <a href="{{circuit.url}}" target="_blank">{{circuit.name}}</a>
         </mat-card>
       </div>
     </ng-container>

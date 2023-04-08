@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
+import { Subscription } from 'rxjs';
+import { UserSelectionService } from 'src/app/shared/user-selection.service';
 import { StandingsApiService } from '../standings-api.service';
 
 @Component({
@@ -6,44 +8,38 @@ import { StandingsApiService } from '../standings-api.service';
   templateUrl: './standings-info.component.html',
   styleUrls: ['./standings-info.component.css']
 })
-export class StandingsInfoComponent implements OnInit {
+export class StandingsInfoComponent implements OnDestroy {
 
   selectedYear: number;
   selectedType: string;
   standingsData: any[];
   displayedColumns: any[];
+  subscription: Subscription;
 
-  constructor(private standingsService : StandingsApiService){}
+  constructor(private userSelection: UserSelectionService, private standingsService : StandingsApiService){
+    this.subscription = this.userSelection.selectedYear$.subscribe((year) => {
+      this.selectedYear = year;
+      this.displayedColumns = this.standingsService.getDisplayedColumns(this.selectedType);
+      this.onSelectedData();
+    });
 
-  ngOnInit(): void {
-    this.selectedYear = 2023;
-    this.selectedType = 'drivers';
-    this.displayedColumns = this.standingsService.getDisplayedColumns(this.selectedType);
-    this.standingsService.getStandings(this.selectedType, this.selectedYear).subscribe(
-      data => {
-        this.standingsData = data;
-      },
-    );
+    this.subscription.add(this.userSelection.selectedType$.subscribe((type) => {
+      this.selectedType = type;
+      this.displayedColumns = this.standingsService.getDisplayedColumns(this.selectedType);
+      this.onSelectedData();
+    }));
   }
 
-  onYearSelected(year: number) {
-    this.selectedYear = year;
+  onSelectedData(){
     this.displayedColumns = this.standingsService.getDisplayedColumns(this.selectedType);
-    this.standingsService.getStandings(this.selectedType, this.selectedYear).subscribe(
-      data => {
-        this.standingsData = data;
-      },
-    );
+      this.standingsService.getStandings(this.selectedType, this.selectedYear).subscribe(
+        data => {
+          this.standingsData = data;
+        },
+      );
   }
 
-  onTypeSelected(type: string) {
-    this.selectedType = type;
-    this.displayedColumns = this.standingsService.getDisplayedColumns(this.selectedType);
-    this.standingsService.getStandings(this.selectedType, this.selectedYear).subscribe(
-      data => {
-        this.standingsData = data;
-      },
-    );
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
   }
-
 }

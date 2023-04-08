@@ -50,7 +50,7 @@ export class StandingsApiService {
   }
 
   getDisplayedColumns(TypeSelection: string){
-    if (TypeSelection === 'driverStandings'){
+    if (TypeSelection === 'drivers'){
       this.displayedColumns = ['position', 'name', 'nationality', 'constructor', 'wins', 'points'];
       return this.displayedColumns
     }

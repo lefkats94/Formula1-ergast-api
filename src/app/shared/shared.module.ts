@@ -15,6 +15,7 @@ import { YearSelectionComponent } from './year-selection/year-selection.componen
 import { DriversOrConstructorsComponent } from './drivers-or-constructors/drivers-or-constructors.component';
 import { FourCardsInARowComponent } from './four-cards-in-a-row/four-cards-in-a-row.component';
 import { TableComponent } from './table/table.component';
+import { NavigationBackComponent } from './navigation-back/navigation-back.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { TableComponent } from './table/table.component';
     YearSelectionComponent,
     DriversOrConstructorsComponent,
     FourCardsInARowComponent,
-    TableComponent
+    TableComponent,
+    NavigationBackComponent
   ],
   imports: [
     CommonModule,

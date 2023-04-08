@@ -6,5 +6,8 @@
       <button mat-button routerLink="/teams">Teams</button>
       <button mat-button routerLink="/results">Results</button>
       <button mat-button routerLink="/circuits">Circuits</button>
+      <app-drivers-or-constructors (selectedType)="onTypeSelected($event)"></app-drivers-or-constructors>
+      <app-year-selection (selectedYear)="onYearSelected($event)"></app-year-selection>
+      <app-navigation-back></app-navigation-back>
     </div>
   </mat-toolbar>

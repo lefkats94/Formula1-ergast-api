@@ -1,4 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
+import { Subscription } from 'rxjs';
+import { UserSelectionService } from 'src/app/shared/user-selection.service';
 import { CircuitsApiService } from '../circuits-api.service';
 
 @Component({
@@ -6,29 +8,29 @@ import { CircuitsApiService } from '../circuits-api.service';
   templateUrl: './circuits-info.component.html',
   styleUrls: ['./circuits-info.component.css']
 })
-export class CircuitsInfoComponent {
+export class CircuitsInfoComponent implements OnDestroy{
+
+  selectedType: string = "circuits";
   selectedYear: number;
-  selectedType: string;
   circuitsData: any[];
+  subscription: Subscription;
 
-  constructor(private circuitsService : CircuitsApiService){}
-
-  ngOnInit(): void {
-    this.selectedYear = 2023;
-    this.selectedType = 'circuits';
-    this.circuitsService.getCircuits(this.selectedYear).subscribe(
-      data => {
-        this.circuitsData = data;
-      },
-    );
+  constructor(private userSelection: UserSelectionService, private circuitsService : CircuitsApiService){
+    this.subscription = this.userSelection.selectedYear$.subscribe((year) => {
+      this.selectedYear = year;
+      this.onSelectedData();
+    });
   }
 
-  onYearSelected(year: number) {
-    this.selectedYear = year;
-    this.circuitsService.getCircuits(this.selectedYear).subscribe(
-      data => {
-        this.circuitsData = data;
-      },
-    );
+  onSelectedData(){
+      this.circuitsService.getCircuits(this.selectedYear).subscribe(
+        data => {
+          this.circuitsData = data;
+        },
+      );
+  }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
   }
 }

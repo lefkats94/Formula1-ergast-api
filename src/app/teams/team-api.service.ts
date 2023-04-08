@@ -7,8 +7,6 @@ import { pluck, map } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class TeamsApiService {
-  standingsData: any[];
-  displayedColumns: string[];
 
   constructor(private http: HttpClient) { }
 

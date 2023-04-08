@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
+import { Subscription } from 'rxjs';
+import { UserSelectionService } from 'src/app/shared/user-selection.service';
 import { ResultsApiService } from '../results-api.service';
 
 @Component({
@@ -6,31 +8,31 @@ import { ResultsApiService } from '../results-api.service';
   templateUrl: './results-list.component.html',
   styleUrls: ['./results-list.component.css']
 })
-export class ResultsListComponent implements OnInit {
+export class ResultsListComponent implements OnDestroy {
   
   selectedYear: number;
   resultsListData: any[];
   displayedColumns: any[];
+  subscription: Subscription;
 
-  constructor(private resultService : ResultsApiService){}
-
-  ngOnInit(): void {
-    this.selectedYear = 2023;
-    this.displayedColumns = ['round','name','wikipedia', 'results'];
-    this.resultService.getResultsList(this.selectedYear).subscribe(
-      data => {
-        this.resultsListData = data;
-      },
-    );
+  constructor(private userSelection: UserSelectionService, private resultService : ResultsApiService){
+    this.subscription = this.userSelection.selectedYear$.subscribe((year) => {
+      this.selectedYear = year;
+      this.displayedColumns = ['round','name','wikipedia', 'results'];
+      this.onSelectedData();
+    });
   }
 
-  onYearSelected(year: number) {
-    this.selectedYear = year;
-    this.resultService.getResultsList(this.selectedYear).subscribe(
-      data => {
-        this.resultsListData = data;
-      },
-    );
+  onSelectedData(){
+      this.resultService.getResultsList(this.selectedYear).subscribe(
+        data => {
+          this.resultsListData = data;
+        },
+      );
+  }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
   }
 
 }
