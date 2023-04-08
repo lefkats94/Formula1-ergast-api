@@ -1,0 +1,10 @@
+.my-button {
+    background-color: #ffffff;
+    border: 2px solid rgb(225, 6, 0);
+    color: rgb(225, 6, 0);
+  }
+  
+.selected {
+background-color: rgb(225, 6, 0);
+color: #ffffff;
+}
