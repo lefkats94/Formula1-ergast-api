@@ -13,7 +13,7 @@ export class TeamsCardsComponent implements OnDestroy {
   selectedYear: number;
   selectedType: string;
   teamsData: any[];
-  subscription: Subscription
+  subscription: Subscription;
 
   constructor(private userSelection: UserSelectionService, private teamsService : TeamsApiService){
     this.subscription = this.userSelection.selectedYear$.subscribe((year) => {

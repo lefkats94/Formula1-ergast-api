@@ -8,7 +8,6 @@ import { ResultsDetailsComponent } from './results/results-details/results-detai
 import { CircuitsInfoComponent } from './circuits/circuits-info/circuits-info.component';
 
 const routes: Routes = [
-  { path: '', component: StandingsInfoComponent},
   { path: 'standings', component: StandingsInfoComponent},
   { path: 'teams', component: TeamsCardsComponent},
   { path: 'results', component: ResultsListComponent},

@@ -1,13 +1,14 @@
 <mat-toolbar class="menu-bar">
-    <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="16px" fxHide.lt-sm>
-      <img src="assets/images/f1_logo.png" alt="Logo">
-      <button mat-button routerLink="/">Home</button>
-      <button mat-button routerLink="/standings">Standings</button>
-      <button mat-button routerLink="/teams">Teams</button>
-      <button mat-button routerLink="/results">Results</button>
-      <button mat-button routerLink="/circuits">Circuits</button>
-      <app-drivers-or-constructors (selectedType)="onTypeSelected($event)"></app-drivers-or-constructors>
-      <app-year-selection (selectedYear)="onYearSelected($event)"></app-year-selection>
-      <app-navigation-back></app-navigation-back>
-    </div>
-  </mat-toolbar>
+  <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="32px" fxHide.lt-sm>
+    <img src="assets/images/f1_logo.png" alt="Logo">
+    <button mat-button routerLink="/standings" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Standings</button>
+    <button mat-button routerLink="/teams" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Teams</button>
+    <button mat-button routerLink="/results" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Results</button>
+    <button mat-button routerLink="/circuits" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Circuits</button>
+    
+    <app-drivers-or-constructors (selectedType)="onTypeSelected($event)"></app-drivers-or-constructors>
+    <app-year-selection (selectedYear)="onYearSelected($event)"></app-year-selection>
+  </div>
+</mat-toolbar>
+
+<app-navigation-back></app-navigation-back>

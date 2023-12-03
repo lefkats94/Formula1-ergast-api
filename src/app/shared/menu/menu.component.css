@@ -12,3 +12,8 @@
 .menu-bar img{
     height: 50px;
 }
+
+.active {
+    color: white !important;
+    background-color: rgb(225, 6, 0) !important;
+  }
